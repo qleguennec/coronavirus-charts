@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "shadow-cljs": "2.8.83"
+  },
+  "dependencies": {
+    "highlight.js": "9.15.10",
+    "moment": "^2.24.0",
+    "plotly.js": "^1.52.3",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-highlight.js": "1.0.7",
+    "react-plotly.js": "^2.4.0"
+  }
+}

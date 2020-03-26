@@ -11,7 +11,6 @@
 (defn home-panel []
   (let [covid-data (re-frame/subscribe [::subs/covid-data-by-earliest-date])]
     (when @covid-data
-      (.log js/console (first @covid-data))
       [(reagent/adapt-react-class Plot)
        {:data [{:x (map (comp #(.toString %) :record_date) @covid-data)
                 :y (map :total_cases @covid-data)
@@ -35,7 +34,9 @@
                 :name "recovered"
                 :showlegend true}]
         :layout {:autosize true
-                 :title "Covid-19 cases in France"}
+                 :title "Covid-19 cases in France"
+                 ;; :yaxis {:type "log"}
+                 }
         :config {:responsive true}
         :style {:width "100vw" :height "100vh"}}])))
 

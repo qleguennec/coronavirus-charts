@@ -21,7 +21,7 @@
      (->> covid-data
           :stat_by_country
           (map #(update % :record_date moment))
-          (sort-by :record_date #(.isBefore %1 %2))
+          (into (sorted-set-by #(.diff (:record_date %1) (:record_date %2) "days")))
           (map (apply comp
                       (map (fn [keyword]
                              (fn [record] (update record keyword #(js/parseInt (clojure.string/replace % #"," "")))))

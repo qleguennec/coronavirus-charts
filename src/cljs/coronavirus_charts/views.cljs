@@ -19,7 +19,7 @@
            {:x (map :confirmed records)
             :y (map :new-confirmed records)
             :type "scatter"
-            :mode "lines"
+            :mode "lines+markers"
             :name country
             :hovertext (map (fn [{:keys [date confirmed]}]
                               (str date " " country ": " confirmed " cases")) records)
@@ -28,7 +28,7 @@
          @covid-data)
         :layout {:autosize true
                  :title "New Covid-19 cases per cases"
-                 :yaxis {:title "new cases"}
+                 :yaxis {:type "log" :title "new cases (logarithmic)"}
                  :xaxis {:type "log" :title "cases (logarithmic)"}
                  :margin {:l 200 :r 200 :b 200 :t 200}}
         :config {:responsive true}

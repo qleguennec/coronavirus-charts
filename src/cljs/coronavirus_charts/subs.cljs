@@ -25,4 +25,5 @@
                        (partition 2 1)
                        (map (fn [[first second]]
                               (merge second {:new-confirmed (- (:confirmed second) (:confirmed first))})))
-                       (filter (fn [{:keys [confirmed]}] (>= confirmed 1000))))]))))))
+                       (filter (fn [{:keys [new-confirmed]}] (> new-confirmed 100))))]))
+          (sort-by first)))))

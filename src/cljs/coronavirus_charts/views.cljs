@@ -14,14 +14,14 @@
       [(reagent/adapt-react-class Plot)
        {:data
         (map-indexed
-         (fn [index records]
+         (fn [index [country records]]
            {:x (map :confirmed records)
             :y (map :new-confirmed records)
             :type "scatter"
             :mode "lines"
             :line {:color (/ index (count @covid-data))}
-            :name (str "new cases in " (name (:country (first records))))
-            :hovertext (map (fn [{:keys [date country confirmed]}] (str date " " (name country) ": " confirmed " cases")) records)
+            :name (str "new cases in " country)
+            :hovertext (map (fn [{:keys [date country confirmed]}] (str date " " country ": " confirmed " cases")) records)
             :hoverinfo "text"
             :showlegend true})
          @covid-data)

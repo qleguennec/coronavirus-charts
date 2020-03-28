@@ -18,7 +18,12 @@
 (re-frame/reg-event-db
  ::register-covid-data
  (fn-traced [db [_ data]]
-            (assoc db :covid-data data)))
+            (assoc db :covid-data
+                   (->> data
+                        (map (fn [[country records]]
+                               [country
+                                (->> records
+                                     (clojure.walk/keywordize-keys))]))))))
 
 (re-frame/reg-event-fx
  ::load-covid-data
@@ -26,5 +31,5 @@
             {:db (assoc db :covid-data :loading)
              :http-xhrio {:method :get
                           :uri "https://pomber.github.io/covid19/timeseries.json"
-                          :response-format (ajax/json-response-format {:keywords? true})
+                          :response-format (ajax/json-response-format)
                           :on-success [::register-covid-data]}}))

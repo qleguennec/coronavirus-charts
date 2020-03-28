@@ -19,12 +19,10 @@
  (fn [{:keys [covid-data]}]
    (when (and covid-data (not (= :loading covid-data)))
      (->> covid-data
-          (filter (fn [[k]] (some #(= k %)
-                                  (map keyword ["France" "Italy" "China" "Spain" "Germany" "US" "Korea, South" "United Kingdom"]))))
-          (map (fn [[country cases]]
-                 (->> cases
-                      (partition 2 1)
-                      (map (fn [[first second]]
-                             (merge second {:new-confirmed (- (:confirmed second) (:confirmed first))})))
-                      (map (partial merge {:country country}))
-                      (filter (fn [{:keys [confirmed]}] (>= confirmed 1000))))))))))
+          (map (fn [[country records]]
+                 [country
+                  (->> records
+                       (partition 2 1)
+                       (map (fn [[first second]]
+                              (merge second {:new-confirmed (- (:confirmed second) (:confirmed first))})))
+                       (filter (fn [{:keys [confirmed]}] (>= confirmed 1000))))]))))))

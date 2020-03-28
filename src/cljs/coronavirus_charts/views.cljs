@@ -21,6 +21,8 @@
             :mode "lines"
             :line {:color (/ index (count @covid-data))}
             :name (str "new cases in " (name (:country (first records))))
+            :hovertext (map (fn [{:keys [date country]}] (str date " " (name country))) records)
+            :hoverinfo "text"
             :showlegend true})
          @covid-data)
         :layout {:autosize true

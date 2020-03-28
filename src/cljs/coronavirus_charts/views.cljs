@@ -3,7 +3,8 @@
    [reagent.core :as reagent]
    [re-frame.core :as re-frame]
    [coronavirus-charts.subs :as subs]
-   ["react-plotly.js" :default Plot]))
+   ["react-plotly.js" :default Plot]
+   ["d3-scale-chromatic" :as d3-scale-chromatic]))
 
 ;; home
 
@@ -19,17 +20,20 @@
             :y (map :new-confirmed records)
             :type "scatter"
             :mode "lines"
-            :line {:color (/ index (count @covid-data))}
-            :name (str "new cases in " country)
-            :hovertext (map (fn [{:keys [date country confirmed]}] (str date " " country ": " confirmed " cases")) records)
+            :name country
+            :hovertext (map (fn [{:keys [date confirmed]}]
+                              (str date " " country ": " confirmed " cases")) records)
             :hoverinfo "text"
             :showlegend true})
          @covid-data)
         :layout {:autosize true
                  :title "New Covid-19 cases per cases"
-                 :xaxis {:type "log"}}
+                 :yaxis {:title "new cases"}
+                 :xaxis {:type "log" :title "cases (logarithmic)"}
+                 :margin {:l 200 :r 200 :b 200 :t 200}}
         :config {:responsive true}
-        :style {:width "100vw" :height "100vh"}}])))
+        :style {:width "100vw"
+                :height "100vh"}}])))
 
 ;; about
 

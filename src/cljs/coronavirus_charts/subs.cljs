@@ -15,21 +15,16 @@
    (:active-panel db)))
 
 (re-frame/reg-sub
- ::covid-data-by-earliest-date
+ ::get-covid-data
  (fn [{:keys [covid-data]}]
    (when (and covid-data (not (= :loading covid-data)))
      (->> covid-data
-          :stat_by_country
-          (map #(update % :record_date moment))
-          (into (sorted-set-by #(.diff (:record_date %1) (:record_date %2) "days")))
-          (map (apply comp
-                      (map (fn [keyword]
-                             (fn [record] (update record keyword #(js/parseInt (clojure.string/replace % #"," "")))))
-                           [:total_cases
-                            :total_recovered
-                            :new_deaths
-                            :new_cases
-                            :total_deaths
-                            :active_cases
-                            :serious_critical
-                            :total_cases_per1m])))))))
+          (filter (fn [[k]] (some #(= k %)
+                                  (map keyword ["France" "Italy" "China" "Spain" "Germany" "US" "Korea, South" "United Kingdom"]))))
+          (map (fn [[country cases]]
+                 (->> cases
+                      (partition 2 1)
+                      (map (fn [[first second]]
+                             (merge second {:new-confirmed (- (:confirmed second) (:confirmed first))})))
+                      (map (partial merge {:country country}))
+                      (filter (fn [{:keys [confirmed]}] (>= confirmed 1000))))))))))

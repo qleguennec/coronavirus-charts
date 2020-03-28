@@ -25,9 +25,6 @@
  (fn-traced [db _]
             {:db (assoc db :covid-data :loading)
              :http-xhrio {:method :get
-                          :uri "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_particular_country.php"
-                          :headers {"x-rapidapi-host" "coronavirus-monitor.p.rapidapi.com"
-                                    "x-rapidapi-key" "c10cf1a58cmshf530d022dad8dfap18c03fjsn2bcd63fd338a"}
-                          :params {"country" "France"}
+                          :uri "https://pomber.github.io/covid19/timeseries.json"
                           :response-format (ajax/json-response-format {:keywords? true})
                           :on-success [::register-covid-data]}}))

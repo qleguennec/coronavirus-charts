@@ -9,34 +9,23 @@
 
 
 (defn home-panel []
-  (let [covid-data (re-frame/subscribe [::subs/covid-data-by-earliest-date])]
+  (let [covid-data (re-frame/subscribe [::subs/get-covid-data])]
     (when @covid-data
       [(reagent/adapt-react-class Plot)
-       {:data [{:x (map (comp #(.toString %) :record_date) @covid-data)
-                :y (map :total_cases @covid-data)
-                :type "scatter"
-                :mode "lines+markers"
-                :marker {:color "blue"}
-                :name "cases"
-                :showlegend true}
-               {:x (map (comp #(.toString %) :record_date) @covid-data)
-                :y (map :total_deaths @covid-data)
-                :type "scatter"
-                :mode "lines+markers"
-                :marker {:color "red"}
-                :name "deaths"
-                :showlegend true}
-               {:x (map (comp #(.toString %) :record_date) @covid-data)
-                :y (map :total_recovered @covid-data)
-                :type "scatter"
-                :mode "lines+markers"
-                :marker {:color "green"}
-                :name "recovered"
-                :showlegend true}]
+       {:data
+        (map-indexed
+         (fn [index records]
+           {:x (map :confirmed records)
+            :y (map :new-confirmed records)
+            :type "scatter"
+            :mode "lines"
+            :line {:color (/ index (count @covid-data))}
+            :name (str "new cases in " (name (:country (first records))))
+            :showlegend true})
+         @covid-data)
         :layout {:autosize true
-                 :title "Covid-19 cases in France"
-                 ;; :yaxis {:type "log"}
-                 }
+                 :title "New Covid-19 cases per cases"
+                 :xaxis {:type "log"}}
         :config {:responsive true}
         :style {:width "100vw" :height "100vh"}}])))
 

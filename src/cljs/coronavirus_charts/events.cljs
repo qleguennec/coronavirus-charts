@@ -27,7 +27,7 @@
 
 (re-frame/reg-event-fx
  ::load-covid-data
- (fn-traced [db _]
+ (fn-traced [{:keys [db]} _]
             {:db (assoc db :covid-data :loading)
              :http-xhrio {:method :get
                           :uri "https://pomber.github.io/covid19/timeseries.json"

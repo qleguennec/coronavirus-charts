@@ -4,7 +4,7 @@
   },
   "dependencies": {
     "highlight.js": "9.15.10",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "plotly.js": "^1.52.3",
     "react": "16.9.0",
     "react-dom": "16.9.0",
